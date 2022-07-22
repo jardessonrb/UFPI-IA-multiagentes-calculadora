@@ -1,5 +1,7 @@
 package com.ia.agente.service;
 
+import java.util.Stack;
+
 public class Extrator {
     private Character operador;
 
@@ -106,5 +108,58 @@ public class Extrator {
             operador == '^' || 
             operador == '/' 
         );
+    }
+
+    public static Stack<String> extrairOperacoesEntreParenteses(String expressao){
+        StringBuilder expressaoBuilder = new StringBuilder();
+        Stack<String> pilhaDeExpressoes = new Stack<String>();
+        for (int i = 0; i < expressao.length(); i++) {
+            if(expressao.charAt(i) != '(' & expressao.charAt(i) != ')'){
+                expressaoBuilder.append(expressao.charAt(i));
+            }else {
+                if(expressaoBuilder.length() >= 1){
+                    pilhaDeExpressoes.add(expressaoBuilder.toString());
+                    expressaoBuilder.delete(0, expressaoBuilder.length());
+                    continue;
+                }
+                expressaoBuilder.delete(0, expressaoBuilder.length());
+                continue;
+            }
+        }
+        return pilhaDeExpressoes; 
+    }
+
+    public static String[] extrairParentesesDaExpressao(String expressao){
+        int indexUltimoFechaParenteses = 0;
+        String expressoes[] = new String[3];
+        StringBuilder expressaoBuilder = new StringBuilder();
+        for (int i = expressao.length() - 1; i >= 0; i--) {
+            if(expressao.charAt(i) == ')'){
+                indexUltimoFechaParenteses = i + 1;
+                break;
+            }
+        }
+        int i = 0;
+        while(expressao.charAt(i) != '('){
+            expressaoBuilder.append(expressao.charAt(i));
+            i++;
+        }
+        expressoes[0] = expressaoBuilder.toString();
+        expressaoBuilder.delete(0, expressaoBuilder.length());
+
+        while(i < indexUltimoFechaParenteses){
+            expressaoBuilder.append(expressao.charAt(i));
+            i++;
+        }
+        expressoes[1] = expressaoBuilder.toString();
+        expressaoBuilder.delete(0, expressaoBuilder.length());
+        
+        while(indexUltimoFechaParenteses < expressao.length()){
+            expressaoBuilder.append(expressao.charAt(indexUltimoFechaParenteses));
+            indexUltimoFechaParenteses++;
+        }
+        expressoes[2] = expressaoBuilder.toString();
+
+        return expressoes;
     }
 }

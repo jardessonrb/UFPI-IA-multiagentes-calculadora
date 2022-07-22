@@ -1,6 +1,7 @@
 package com.ia.agente;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +21,7 @@ public class AgenteGerenteTeste {
     @Test
     @DisplayName("Deve passar")
     public void testeInicial(){
-        String expressao = "+6-2/4+10*1+R25^2";
+        String expressao = "6-2/4+10*1+R25^2";
         Gerente gerente = new Gerente(expressao, 
                                     new AgenteSoma('+', 1),
                                     new AgenteSubtracao('-', 1),
@@ -29,8 +30,8 @@ public class AgenteGerenteTeste {
                                     new AgenteDivisao('/', 2),
                                     new AgenteRaizQuadrada('R', 3)
                                     );
-       Assertions.assertDoesNotThrow(() -> gerente.calcular()); 
-       
+       String resposta = gerente.calcular();
+       assertEquals("40.5", resposta);
   
     }
 }
