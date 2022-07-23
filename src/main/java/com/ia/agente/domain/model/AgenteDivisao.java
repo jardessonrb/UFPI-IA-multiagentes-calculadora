@@ -12,7 +12,7 @@ public class AgenteDivisao extends Extrator implements Agente{
 
     public String calcular(String expressao) {
         String operandos[] = extrair(expressao);
-
+        System.out.println("Agente divisao: "+expressao+" = "+operandos[1] +" / "+operandos[2]+" resto = "+operandos[3]);
         Double op1 = Double.parseDouble(operandos[1]);
         Double op2 = Double.parseDouble(operandos[2]);   
 

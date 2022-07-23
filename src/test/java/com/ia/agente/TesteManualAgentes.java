@@ -13,8 +13,14 @@ import com.ia.agente.domain.model.AgenteSubtracao;
 public class TesteManualAgentes {
     
     public static void main(String[] args) {
-        // String expressao = "12+20(10-5+(20+2))";
-        String expressao = "-20+10+(10/2*(8/2))";
+        // String expressao = "(-20+40/2+2*14/2^2+R100)-7";//10
+        // String expressao = "(-20+40/2+2*14/2^2+R100)";//17
+        // String expressao = "-20+40/2+2*14/2^2+R100";//17
+        // String expressao = "-20+(10*(8/2))";//20
+        // String expressao = "-20+(16/-8/2)"; //-19
+        String expressao = "23+12-55+(2+4)-8/2^2"; //-16
+        // String expressao = "";
+
         Gerente gerente = new Gerente(expressao, 
                                     new AgenteSoma('+', 1),
                                     new AgenteSubtracao('-', 1),
@@ -25,12 +31,6 @@ public class TesteManualAgentes {
                                     );
 
         System.out.println("Resultado da expressão "+expressao+" = "+gerente.calcular());
-
-        // // gerente.calcularExpressaoEntreParenteses("(12+(10-5)+10-20*10)");
-        // String expre[] = Extrator.extrairParentesesDaExpressao("10-20*10-20+(12+20(10-5+(10-30)))");
-        // Stack<String> ep = Extrator.extrairOperacoesEntreParenteses(expre[1]);
-        // while(!ep.isEmpty()){
-        //     System.out.println(ep.pop());
-        // }
+        // System.out.println(gerente.isOperavel('-', "20"));
     }
 }

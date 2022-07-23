@@ -49,9 +49,12 @@ public class Gerente {
 
         if(contemParenteses){
             String operacoes[] = Extrator.extrairParentesesDaExpressao(this.expressao);
-            String expressaoResultado = calcularExpressaoEntreParenteses(operacoes[1]);
-            this.expressao = operacoes[0]+expressaoResultado+operacoes[2];
-            this.operacoes = listaOperacoes();
+            String expressaoResultado = calcularExpressaoEntreParenteses(operacoes[1].toString());
+            System.out.println("Teste: "+operacoes[0]+" = "+expressaoResultado);
+            this.expressao = resolverSinal(operacoes[0], expressaoResultado)+operacoes[2];
+            
+            System.out.println("Expressao fluxo normal: "+this.expressao);
+            this.operacoes = listaOperacoes(this.expressao);
         }
 
         for (int i = 0; i < this.operacoes.size(); i++) {
@@ -61,22 +64,45 @@ public class Gerente {
         return this.expressao;
     }
 
-    public String calcularExpressaoEntreParenteses(String expressao){
-        Stack<String> pilhaDeExpressoes = Extrator.extrairOperacoesEntreParenteses(expressao);
-        StringBuilder resultado = new StringBuilder();
-        String expressaoAnterior = "";
-        while(!pilhaDeExpressoes.isEmpty()){
-            String subExpressao = pilhaDeExpressoes.pop();
-            subExpressao = subExpressao+expressaoAnterior;
-            List<Operacao> operacoes = listaOperacoes(subExpressao);
-            for (int i = 0; i < operacoes.size(); i++) {
-                subExpressao = agentes.get(this.operacoes.get(i).getOperacao()).calcular(subExpressao);
-            }
-            expressaoAnterior = subExpressao;
+
+
+    public String resolverSinal(String expressao1, String expressao2){
+        StringBuilder builder = new StringBuilder();
+        if(expressao1.equals("") || expressao2.equals("")){
+            return expressao1+expressao2;
+        }
+
+        if(expressao1.charAt(expressao1.length() - 1) == '-' & expressao2.charAt(0) == '-'){
+            builder.append(expressao1.substring(0, expressao1.length() - 1));
+            builder.append("+"+expressao2.substring(1, expressao2.length()));
+        }else if(expressao1.charAt(expressao1.length() - 1) == '+' & expressao2.charAt(0) == '+'){
+            builder.append(expressao1);
+            builder.append(expressao2.substring(1, expressao2.length()));
+        }else{
+            builder.append(expressao1);
+            builder.append(expressao2);
         }
         
-        System.out.println("resultado das expressoes entre parenteses: "+expressaoAnterior);
-        return expressaoAnterior;
+
+        return builder.toString();
+    }
+
+    public String calcularExpressaoEntreParenteses(String expressao){
+        Stack<String> pilhaDeExpressoes = Extrator.extrairOperacoesEntreParenteses(expressao);
+        StringBuilder builder = new StringBuilder();
+        while(!pilhaDeExpressoes.isEmpty()){
+            String subExpressao = resolverSinal(pilhaDeExpressoes.pop().toString(), builder.toString());
+            System.out.println("Subexpressao: "+subExpressao);
+            List<Operacao> operacoes = listaOperacoes(subExpressao);
+            for (Operacao operacao : operacoes) {
+                subExpressao = agentes.get(operacao.getOperacao()).calcular(subExpressao);
+            }
+            builder.delete(0, builder.length());
+            builder.append(subExpressao);
+        }
+        
+        System.out.println("resultado das expressoes entre parenteses: "+builder.toString());
+        return builder.toString();
     }
 
     public List<Operacao> listaOperacoes(){
@@ -92,7 +118,7 @@ public class Gerente {
                     contemParenteses = true;
                     continue;
                 }
-                // if(this.agentes.containsKey(operador) & operador == '(') continue;
+                
                 Operacao operacao = new Operacao(operador, agentes.get(operador).getPrioridade());
                 operacoesSort.add(operacao);
             }
@@ -135,7 +161,7 @@ public class Gerente {
 
         return expressaoLimpa;
     }
-    
+
     public void validarExpressao(String expressao){
         for (int i = 0; i < (expressao.length() - 1); i++) {
             if(i == 0 & (expressao.charAt(i) == '+' || expressao.charAt(i) == '/')){

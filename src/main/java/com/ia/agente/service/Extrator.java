@@ -3,7 +3,7 @@ package com.ia.agente.service;
 import java.util.Stack;
 
 public class Extrator {
-    private Character operador;
+    public Character operador;
 
     public Extrator(Character operador){
         this.operador = operador;
@@ -35,7 +35,7 @@ public class Extrator {
         StringBuilder operando = new StringBuilder();
         StringBuilder restoExpressao = new StringBuilder();
         while(index < expressao.length()){
-            if(!isOperacao(expressao.charAt(index))){
+            if(!isOperacao(expressao.charAt(index)) || (expressao.charAt(index) == '-' & (isOperacao(expressao.charAt(index - 1))))){
                 operando.append(expressao.charAt(index));
             }else{
                 break;
@@ -79,7 +79,7 @@ public class Extrator {
         return primeiraParte;
     }
 
-    public Character getOperador(){
+    protected Character getOperador(){
         return this.operador;
     }
 
@@ -105,8 +105,7 @@ public class Extrator {
             operador == '+' ||
             operador == '-' || 
             operador == '*' || 
-            operador == '^' || 
-            operador == '/' 
+            operador == '^' 
         );
     }
 
@@ -162,4 +161,5 @@ public class Extrator {
 
         return expressoes;
     }
+
 }

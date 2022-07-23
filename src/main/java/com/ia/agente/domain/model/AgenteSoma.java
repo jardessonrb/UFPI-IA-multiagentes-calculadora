@@ -13,6 +13,7 @@ public class AgenteSoma extends Extrator implements Agente {
     public String calcular(String expressao) {
         String[] operandos = extrair(expressao);
         String resultadoSoma = "";
+        System.out.println("Agente soma: "+expressao+" = "+operandos[1] +" + "+operandos[2]+" resto = "+operandos[3]);
         Double soma = Double.parseDouble(operandos[1]) + Double.parseDouble(operandos[2]);
 
         if(soma > 0 & operandos[0].equals("")){
