@@ -17,8 +17,8 @@ public class TesteManualAgentes {
         // String expressao = "(-20+40/2+2*14/2^2+R100)";//17
         // String expressao = "-20+40/2+2*14/2^2+R100";//17
         // String expressao = "-20+(10*(8/2))";//20
-        // String expressao = "-20+(16/-8/2)"; //-19
-        String expressao = "23+12-55+(2+4)-8/2^2"; //-16
+        // String expressao = "-20+(16/-8/2)"; //-21
+        // String expressao = "23+12-55+(2+4)-8/2^2"; //-16
         // String expressao = "";
 
         Gerente gerente = new Gerente(expressao, 

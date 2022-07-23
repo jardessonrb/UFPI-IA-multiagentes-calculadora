@@ -12,7 +12,9 @@ public class AgenteSubtracao  extends Extrator implements Agente {
 
     public boolean isOperavel(char op, String expresao){
         String operandos[] = expresao.split(String.valueOf(op));
-        if(operandos.length >= 2){
+        System.out.println("Tamanho do array no menos: "+operandos.length);
+        // System.out.printf("%s %s %s ", operandos[0], operandos[1], operandos[2]);
+        if(operandos.length == 2){
             if(operandos[0].equals("") || operandos[1].equals("")){
                 System.out.println("Não pode calcular");
                 return false;
@@ -20,9 +22,9 @@ public class AgenteSubtracao  extends Extrator implements Agente {
                 System.out.println("Opa pode calcular");
                 return true;
             }
+        }else {
+            return true;
         }
-
-        return false;
 
         // System.out.println("Expressao: "+expresao+" = "+operandos.length);
 
