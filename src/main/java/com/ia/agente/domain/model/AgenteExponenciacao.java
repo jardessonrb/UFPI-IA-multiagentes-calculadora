@@ -4,6 +4,7 @@ import com.ia.agente.service.Extrator;
 
 public class AgenteExponenciacao extends Extrator implements Agente{
     private Integer prioridade;
+    private String nome = "Agente de Exponenciacao";
 
     public AgenteExponenciacao(Character operador, Integer prioridade) {
         super(operador);
@@ -18,7 +19,9 @@ public class AgenteExponenciacao extends Extrator implements Agente{
 
        
         Double exponenciacao = Math.pow(op1, op2);
-        return operandos[0]+exponenciacao+operandos[3];
+        String resultado = operandos[0]+exponenciacao+operandos[3];
+        System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+        return resultado;
     }
 
     public Character getOperacao() {
@@ -27,6 +30,11 @@ public class AgenteExponenciacao extends Extrator implements Agente{
 
     public Integer getPrioridade() {
         return this.prioridade;
+    }
+
+    @Override
+    public String getNome() {
+        return this.nome;
     }
 
     

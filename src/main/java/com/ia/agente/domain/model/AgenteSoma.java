@@ -4,6 +4,7 @@ import com.ia.agente.service.Extrator;
 
 public class AgenteSoma extends Extrator implements Agente {
     private Integer prioridade;
+    private String nome = "Agente Soma";
 
     public AgenteSoma(Character operacao, Integer prioridade){
         super(operacao);
@@ -13,25 +14,32 @@ public class AgenteSoma extends Extrator implements Agente {
     public String calcular(String expressao) {
         String[] operandos = extrair(expressao);
         String resultadoSoma = "";
-        System.out.println("Agente soma: "+expressao+" = "+operandos[1] +" + "+operandos[2]+" resto = "+operandos[3]);
         Double soma = Double.parseDouble(operandos[1]) + Double.parseDouble(operandos[2]);
 
         if(soma > 0 & operandos[0].equals("")){
             resultadoSoma += soma;
-            return resultadoSoma+operandos[3];
+            String resultado = resultadoSoma+operandos[3];
+            System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+            return resultado;
         }
 
         if(soma > 0 & !operandos[0].equals("")){
             resultadoSoma += "+"+soma;
-            return operandos[0]+resultadoSoma+operandos[3];
+            String resultado = operandos[0]+resultadoSoma+operandos[3];
+            System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+            return resultado;
         }
 
         if(soma == 0 & !operandos[0].equals("")){
             resultadoSoma += "-"+soma;
-            return operandos[0]+resultadoSoma+operandos[3];
+            String resultado = operandos[0]+resultadoSoma+operandos[3];
+            System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+            return resultado;
         }
-    
-        return operandos[0]+soma+operandos[3];
+
+        String resultado = operandos[0]+soma+operandos[3];
+        System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+        return resultado;
     }
 
     public Character getOperacao() {
@@ -40,5 +48,11 @@ public class AgenteSoma extends Extrator implements Agente {
 
     public Integer getPrioridade() {
         return this.prioridade;
+    }
+
+    @Override
+    public String getNome() {
+        // TODO Auto-generated method stub
+        return this.nome;
     }
 }

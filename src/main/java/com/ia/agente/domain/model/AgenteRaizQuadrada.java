@@ -4,7 +4,7 @@ import com.ia.agente.service.Extrator;
 
 public class AgenteRaizQuadrada extends Extrator implements Agente{
         private Integer prioridade;
-    
+        private String nome = "Agente Raiz Quadrada";
         public AgenteRaizQuadrada(Character operador, Integer prioridade) {
             super(operador);
             this.prioridade = prioridade;
@@ -15,7 +15,9 @@ public class AgenteRaizQuadrada extends Extrator implements Agente{
             Double op2 = Double.parseDouble(operandos[2]);   
     
             Double raiz = Math.sqrt(op2);
-            return operandos[0]+operandos[1]+raiz+operandos[3];
+            String resultado = operandos[0]+operandos[1]+raiz+operandos[3];
+            System.out.printf("\n%s recebe %s envia para Gerente o resultado %s", nome, expressao, resultado);
+            return resultado;
         }
     
         public Character getOperacao() {
@@ -24,5 +26,11 @@ public class AgenteRaizQuadrada extends Extrator implements Agente{
     
         public Integer getPrioridade() {
             return this.prioridade;
+        }
+
+        @Override
+        public String getNome() {
+            // TODO Auto-generated method stub
+            return this.nome;
         }
 }

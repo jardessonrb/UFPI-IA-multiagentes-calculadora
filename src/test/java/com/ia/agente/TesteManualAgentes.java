@@ -1,6 +1,11 @@
 package com.ia.agente;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Stack;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import com.ia.agente.controller.Gerente;
 import com.ia.agente.domain.model.AgenteDivisao;
@@ -16,10 +21,10 @@ public class TesteManualAgentes {
         // String expressao = "(-20+40/2+2*14/2^2+R100)-7";//10
         // String expressao = "(-20+40/2+2*14/2^2+R100)";//17
         // String expressao = "-20+40/2+2*14/2^2+R100";//17
-        // String expressao = "-20+(10*(8/2))";//20
+        String expressao = "-20+(16/(-8/2))";//-24.0
         // String expressao = "-20+(16/-8/2)"; //-21
+        // String expressao = "10+(-2-4)"; //4
         // String expressao = "23+12-55+(2+4)-8/2^2"; //-16
-        // String expressao = "";
 
         Gerente gerente = new Gerente(expressao, 
                                     new AgenteSoma('+', 1),
@@ -30,7 +35,23 @@ public class TesteManualAgentes {
                                     new AgenteRaizQuadrada('R', 3)
                                     );
 
-        System.out.println("Resultado da expressão "+expressao+" = "+gerente.calcular());
+        // System.out.println("Resultado da expressão "+expressao+" = "+gerente.calcular());
         // System.out.println(gerente.isOperavel('-', "20"));
+
+        // assertEquals("20.0", gerente.calcular());
+    }
+
+    @Test
+    @DisplayName("Deve passar")
+    public void testeInicial(){
+        Gerente gerente = new Gerente("-20+(16/(-8/2))", 
+                            new AgenteSoma('+', 1),
+                            new AgenteSubtracao('-', 1),
+                            new AgenteMultiplicacao('*', 2),
+                            new AgenteExponenciacao('^', 3),
+                            new AgenteDivisao('/', 2),
+                            new AgenteRaizQuadrada('R', 3)
+                            );
+        assertEquals("-24.0", gerente.calcular());
     }
 }

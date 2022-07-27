@@ -11,6 +11,8 @@ import java.util.Stack;
 import com.ia.agente.domain.model.Agente;
 import com.ia.agente.service.Extrator;
 
+import jade.core.Agent;
+
 class Operacao {
     public Character operacao;
     public Integer prioridade;
@@ -29,42 +31,47 @@ class Operacao {
     }
 }
 
-public class Gerente {
+public class Gerente extends Agent {
+	private static final long serialVersionUID = 1L;
     private String expressao;
     private Map<Character, Agente> agentes = new HashMap<Character,Agente>();
     private List<Operacao> operacoes;
     private boolean contemParenteses = false;
-
+    
     public Gerente(String expressao, Agente ...agentesArray){
         this.expressao = expressao;
         for (Agente agente : agentesArray) {
             agentes.put(agente.getOperacao(), agente);
         }
     }
+    
 
     public String calcular(){
         this.expressao = limparExpressao(this.expressao);
         validarExpressao(this.expressao);
         this.operacoes = listaOperacoes();
 
+        System.out.println("============== Gerente ===========");
+        System.out.println("Expressão para ser resolvida: "+this.expressao);
+        System.out.println("==================================");
+
         if(contemParenteses){
             String operacoes[] = Extrator.extrairParentesesDaExpressao(this.expressao);
+            System.out.println("============== Gerente ===========");
+            System.out.println("Expressão para calculo entre parenteses: "+this.expressao);
             String expressaoResultado = calcularExpressaoEntreParenteses(operacoes[1].toString());
-            System.out.println("Teste: "+operacoes[0]+" = "+expressaoResultado);
+            System.out.println("\nResultado entre parenteses: "+expressaoResultado);
+            System.out.println("==================================");
             this.expressao = resolverSinal(operacoes[0], expressaoResultado)+operacoes[2];
-            
-            System.out.println("Expressao fluxo normal: "+this.expressao);
             this.operacoes = listaOperacoes(this.expressao);
         }
-
+        
         for (int i = 0; i < this.operacoes.size(); i++) {
             this.expressao = agentes.get(this.operacoes.get(i).getOperacao()).calcular(this.expressao);
         }
-        
+
         return this.expressao;
     }
-
-
 
     public String resolverSinal(String expressao1, String expressao2){
         StringBuilder builder = new StringBuilder();
@@ -90,18 +97,18 @@ public class Gerente {
     public String calcularExpressaoEntreParenteses(String expressao){
         Stack<String> pilhaDeExpressoes = Extrator.extrairOperacoesEntreParenteses(expressao);
         StringBuilder builder = new StringBuilder();
+        System.out.println("============== Gerente ===========");
         while(!pilhaDeExpressoes.isEmpty()){
             String subExpressao = resolverSinal(pilhaDeExpressoes.pop().toString(), builder.toString());
-            System.out.println("Subexpressao: "+subExpressao);
             List<Operacao> operacoes = listaOperacoes(subExpressao);
             for (Operacao operacao : operacoes) {
+                System.out.printf("\nGerente envia %s para %s", subExpressao, agentes.get(operacao.getOperacao()).getNome());
                 subExpressao = agentes.get(operacao.getOperacao()).calcular(subExpressao);
             }
             builder.delete(0, builder.length());
             builder.append(subExpressao);
         }
         
-        System.out.println("resultado das expressoes entre parenteses: "+builder.toString());
         return builder.toString();
     }
 
@@ -139,6 +146,11 @@ public class Gerente {
             if(i == 0 & expressao.charAt(i) == '-'){
                 continue;
             }
+            if(i > 0){
+                if(expressao.charAt(i) == '-' & Extrator.isOperacao(expressao.charAt(i - 1))){
+                    continue;
+                }
+            }
 
             if(Extrator.isOperacao(expressao.charAt(i))){
                 Character operador = expressao.charAt(i);
@@ -160,6 +172,10 @@ public class Gerente {
         String expressaoLimpa = expressao.replaceAll("\\s+","");
 
         return expressaoLimpa;
+    }
+
+    public void atualizarExpressao(String expressao){
+        this.expressao = expressao;
     }
 
     public void validarExpressao(String expressao){
